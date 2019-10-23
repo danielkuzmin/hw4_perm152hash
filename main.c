@@ -8,13 +8,13 @@ int main() {
 
     perm152hash(buf, 72, out);
 
-    for (int i = 0; i < 32; i++) {
-        printf("%c",buf[i]);
-    }
-    printf("\n");
-    for (int i = 0; i < 32; i++) {
-        printf("%d ",out[i]);
-    }
+//    for (int i = 0; i < 32; i++) {
+//        printf("%c",buf[i]);
+//    }
+//    printf("\n");
+//    for (int i = 0; i < 32; i++) {
+//        printf("%x",out[i]);
+//    }
 
     return 0;
 }
