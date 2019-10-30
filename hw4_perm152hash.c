@@ -9,11 +9,9 @@
  clang -g -O0 -std=c99 -Werror -Wall -Wextra -Wconversion -fsanitize=address hw4_perm152hash.c
 */
 
-// REMOVE THIS INCLUDE BEFORE TURING IN
-//#include "perm152.c"
-
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #define Capacity 32
 #define Rate 32
 #define Output 32
