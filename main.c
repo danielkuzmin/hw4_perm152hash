@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "hw4_perm152hash.c"
 
 void perm152hash(unsigned char *m, int mbytes, unsigned char *res);
 

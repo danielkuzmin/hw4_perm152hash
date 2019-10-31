@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define Capacity 32
 #define Rate 32
