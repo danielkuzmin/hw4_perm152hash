@@ -49,6 +49,7 @@ int main() {
     perm152hash(pt, 1000000, buf);
     pass = pass && (memcmp(buf,res1000000,32)==0);
 
+
     printf("%s\n", (pass ? "Pass" : "No pass"));
     free(pt);
 
