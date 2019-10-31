@@ -12,69 +12,39 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+
 #define Capacity 32
 #define Rate 32
 #define Output 32
-#define Param64 64
 
-// Sets elements in a given array to 0
-void arrClear(unsigned char* arr, unsigned long len) {
-    memset(arr, 0, len);
-}
-
-// Copies an array into another array for the given amount of elements
-void arrCopy(unsigned char* arrsrc, unsigned char* arrtgt, unsigned long len) {
- memcpy(arrtgt, arrsrc, len);
-}
-
-
-// Perm152 is prototyped below but defined in a separate file
-void perm152(unsigned char *in, unsigned char *out);
-
-// XOR Two arrays for a given amount of bytes
-void xor(unsigned char *dst, unsigned char *src, int num_bytes) {
-    for (int i = 0; i < num_bytes; i++) {
-        dst[i] ^= src[i];
-    }
-}
+// Externally defined function prototype
+void perm152(unsigned char *in, unsigned char *out);  // each an array of 64 bytes
 
 void perm152hash(unsigned char *m, int mbytes, unsigned char *res) {
-    //absorb
-    unsigned long MPaddedLen = (unsigned long) (10 * mbytes);
-    unsigned char MPadded[MPaddedLen];
-    memset(MPadded, 0, MPaddedLen);
-    arrCopy(m, MPadded, (unsigned long) mbytes);
-    MPadded[mbytes+1] = 1;
-    int n = mbytes/Rate;
-    unsigned char chunk[Capacity];
-    unsigned char result[Output];
-    unsigned char ctemp2b[Param64], ctemp3b[Param64];
-    memset(result, 0, Output);
 
-    // This loop need to step through MPadded extracting chunks
-    for (int i = 0; i < n; i++)
+    unsigned char *Mpadded = malloc((unsigned long)mbytes * sizeof(unsigned char));
+    memcpy(Mpadded, m, (unsigned long)mbytes);
+
+    unsigned char block[64];
+    for (int i = 0; i < 64; i++)
     {
-        for (int j = 0; j < Capacity; j++)
-        {
-            chunk[j] = MPadded[(i*Rate) + j];
-        }
-        xor(result, chunk, Capacity);
-        memset(ctemp2b, 0, Param64);
-        memset(ctemp3b, 0, Param64);
-        arrCopy(chunk, ctemp2b, Rate);
-        perm152(ctemp2b, ctemp3b);
-        arrCopy(ctemp3b, result, Rate);
+        block[i] = (unsigned char)i+1;
+        printf("%x ", block[i]);
     }
-//squeeze
-    while(true)
+
+    while (mbytes >= 32)
     {
-        for(int i = 0; i < Capacity; i++){
-            res[i] = result[i];
-            if(i >= Output - 1)
-            {
-                return;
-            }
-        }
-        perm152(ctemp2b, ctemp3b);
+        // Process 32 bytes of m
+
+        // 32 Bytes processed, decrement the counter by 32
+        mbytes -= 32;
+        // Advance the pointer by 32 bytes
+        m += 32;
     }
+    // Pad the remaining <32 bytes
+
+    memcpy(res, Mpadded, 1);
+
+
+    free(Mpadded);
 }
