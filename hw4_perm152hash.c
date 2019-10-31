@@ -44,7 +44,7 @@ void perm152hash(unsigned char *m, int mbytes, unsigned char *res) {
     for (int i = 0; i < 32; i++) {
         paddedFinal[i] = 0x00;
     }
-    memcpy(paddedFinal, mcopy, mbytesCopy);
+    memcpy(paddedFinal, mcopy, (unsigned long)mbytesCopy);
 
 
 
