@@ -48,22 +48,29 @@ void perm152hash(unsigned char *m, int mbytes, unsigned char *res) {
 
 
     // Pad to a multiple of 32
-    unsigned char* mcopy = m;
+    unsigned char* mPaddedOriginal = Mpadded;
     int mbytesCopy = mbytes;
     while (mbytesCopy >= 32) {
-        memcpy(Mpadded, mcopy, 32);
+        memcpy(Mpadded, m, 32);
         mbytesCopy -= 32;
-        mcopy += 32;
+        m += 32;
+        Mpadded += 32;
     }
 
+    // Final block of M is created by initializing an array of zeroes, and copying the last block's data into it
     unsigned char paddedFinal[32];
     for (int i = 0; i < 32; i++) {
         paddedFinal[i] = 0x00;
     }
+    // Copy the data into the zero array
+    memcpy(paddedFinal, m, (unsigned long)mbytesCopy);
+    // Set the correct byte to 1
+    paddedFinal[mbytesCopy] = 0b10000000;
+    // Copy the padded final section into Mpadded
+    memcpy(Mpadded, paddedFinal, (unsigned long)mbytesCopy);
 
-    memcpy(paddedFinal, mcopy, (unsigned long)mbytesCopy);
-
-
+    // Reset pointer
+    Mpadded = mPaddedOriginal;
 
     int totalBlocks = mbytes/32;
     if (totalBlocks == 0)
@@ -72,7 +79,7 @@ void perm152hash(unsigned char *m, int mbytes, unsigned char *res) {
     for (int blockNum = 1; blockNum <= totalBlocks; blockNum++) {
         // XOR Mi into the first r bytes of block
         for (int i = 0; i < 32; i++) {
-            block[i] = block[i]^m[i];
+            block[i] = block[i]^Mpadded[i];
         }
         // block = perm(block)
         perm152(block, block);
@@ -80,7 +87,6 @@ void perm152hash(unsigned char *m, int mbytes, unsigned char *res) {
 
     // output the first min(r,b) bytes of block
     memcpy(res, block, 32);
-
 
     free(Mpadded);
 }
