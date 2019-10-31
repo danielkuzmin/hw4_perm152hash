@@ -52,8 +52,5 @@ int main() {
     printf("%s\n", (pass ? "Pass" : "No pass"));
     free(pt);
 
-//    unsigned char test[] = {0xAE,0x4F,0x70};
-//    unsigned char result[32];
-//    perm152hash(test, 1, result);
     return 0;
 }
