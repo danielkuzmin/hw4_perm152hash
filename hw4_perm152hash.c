@@ -34,10 +34,18 @@ void perm152hash(unsigned char *m, int mbytes, unsigned char *res) {
 
     // Pad to a multiple of 64
     unsigned char* mcopy = m;
-    while (mbytes >= 32) {
-        mbytes -= 32;
+    int mbytesCopy = mbytes;
+    while (mbytesCopy >= 32) {
+        mbytesCopy -= 32;
         mcopy += 32;
     }
+
+    unsigned char paddedFinal[32];
+    for (int i = 0; i < 32; i++) {
+        paddedFinal[i] = 0x00;
+    }
+    memcpy(paddedFinal, mcopy, mbytesCopy);
+
 
 
     // for i to n
